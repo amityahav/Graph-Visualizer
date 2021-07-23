@@ -1,0 +1,107 @@
+
+.vertex {
+  fill: red;
+  stroke: black;
+  stroke-width: 3;
+  
+}
+.vertex:hover {
+  fill: rgb(211, 104, 104);
+
+  display: block;
+  color: red;
+}
+.clicked{
+  fill:rgb(211, 104, 104)
+}
+
+text {
+  pointer-events: none;
+}
+
+#board{
+    display: block;
+    float: left;
+    width: 1000px;
+    height: 500px;
+    background: rgb(226, 214, 214);
+    position: absolute;
+    left: 230px;
+    top: 10px;
+}
+
+.vertical-menu {
+  width: 200px; /* Set a width if you like */
+}
+
+.vertical-menu b{
+  background-color:rgb(218, 5, 5); /* Grey background color */
+  color: white; /* Black text color */
+  display: block; /* Make the links appear below each other */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove underline from links */
+  pointer-events: none;
+}
+.vertical-menu button {
+  background-color: #eee; /* Grey background color */
+  color: black; /* Black text color */
+  display: block; /* Make the links appear below each other */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove underline from links */
+  width: 200px;
+}
+
+.vertical-menu button:hover {
+  background-color: #ccc; /* Dark grey background on mouse-over */
+}
+
+.vertical-menu button.active {
+  background-color: #ccc; /* Add a green color to the "active/current" link */
+  color: black;
+}
+
+#textBox{
+  position: relative;
+  top: 50px;
+  right: 73px;
+  width: 191px;
+  height: 25px;
+
+}
+
+#terminal{
+
+    position: absolute;
+    top: 40px;
+    left: 1240px;
+    width: 280px;
+    height: 464px;
+
+}
+
+#terminalH{
+  position: absolute;
+  top: 5px;
+  left: 1240px;
+  width: 280px;
+  height: 400px;
+  font-size: 30px;
+}
+
+#launch{
+  position: relative;
+  top: 40px;
+  width: 200px;
+  height: 25px;
+}
+
+#reset{
+  position: relative;
+  top: 290px;
+  left: 1153px;
+  width: 70px;
+  height: 25px; 
+}
+.active {
+  color: #ccc;
+}

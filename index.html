@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css" />
+    
+</head>
+<body>   
+    <div class="vertical-menu">
+        <b>Choose an Algorithm:</b>
+        <button class="btnMenu" id=dfs>DFS</button>
+        <button class="btnMenu" id=bfs>BFS</button>
+        <button class="btnMenu" id=dijkstra>Dijkstra</button>
+        <button class="btnMenu" id=maxflow>Max Flow</button>
+        
+      </div>
+      <button type="button" id=reset>Reset</button>
+      <b id= terminalH>Terminal:</b>
+      <textarea name="text" id="terminal" cols="30" rows="50"></textarea>
+
+      <g id="txtLaunch" hidden>
+        <input type="text" id="textBox" value="Choose source Vertex"><br><br>
+        <button type="button" id=launch>Launch</button>
+      </g>
+    <svg id="board" xmlns="http://www.w3.org/2000/svg">
+       <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+        refX="15" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" />
+        </marker>
+       </defs>
+    </svg>
+   
+   <script type= "module" src="./simulator.js"></script> 
+</body>
+</html>
+
