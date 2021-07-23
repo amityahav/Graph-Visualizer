@@ -1,6 +1,6 @@
 
 import { Graph , Vertex } from "./graph.js"
-import { DFS, BFS, cr } from "./Algorithms.js"
+import { DFS, BFS, cr, Dijkstra } from "./Algorithms.js"
 
 
 //global variables
@@ -9,11 +9,14 @@ const board = document.getElementById("board");
 const resetBtn = document.getElementById("reset");
 export const terminal = document.getElementById("terminal");
 let activeBtn = null; 
+const weightEnabled = ['prim','kruskal','dijkstra','maxflow'];
 
 //..DFS
 const dfsBtn = document.getElementById("dfs");
 //..BFS
 const bfsBtn = document.getElementById("bfs");
+//..Dijkstra
+const dijkstraBtn = document.getElementById("dijkstra");
 
 const launchBtn = document.getElementById("launch");
 const textBox = document.getElementById("textBox");
@@ -42,11 +45,18 @@ const graphReset = function() {
         vertex.htmlElement.style.stroke = 'black';
     });
 }
+const btnInit = function(e) {
 
+    document.getElementById("txtLaunch").removeAttribute("hidden");
+    if(activeBtn!=null)
+        activeBtn.classList.toggle("active");
+    activeBtn = e.target; 
+    activeBtn.classList.toggle("active");
+}
 //Event handlers
 
 board.addEventListener('click',function(e) {
-    //console.log(graph);
+
     if(e.target!=board) return;
 
     let id = makeFreshId();
@@ -55,7 +65,7 @@ board.addEventListener('click',function(e) {
     <text fill="white" x=${e.clientX-230} y=${e.clientY} font-size="20" text-anchor="middle" alignment-baseline="central">${id.toString()}</text> </g>`);
     const vertex = document.querySelector('.vertex');
     graph.addVertex(id,vertex);
-
+    console.log(graph.getVertex(id));
     vertex.addEventListener('click',function(e) {
 
         const vertex_x = e.path[0].attributes[2].nodeValue;
@@ -74,9 +84,19 @@ board.addEventListener('click',function(e) {
             }
 
             const edgeId = `${from.id.toString()}-${id.toString()}`;
-            board.insertAdjacentHTML('afterbegin',
-            `<line id=${edgeId} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>`)
-            graph.getEdge(edgeId).setHtmlElement(document.getElementById(edgeId));
+            const edge = graph.getEdge(edgeId);
+
+            if(activeBtn!=null && weightEnabled.includes(activeBtn.id)){
+                edge.weight = +prompt("Enter a positive weight:");
+                board.insertAdjacentHTML('afterbegin',
+                `<g> <line id=${edge.id} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>
+                <text fill="red" x=${((+from.x)+(+vertex_x))/2} y=${((+from.y)+(+vertex_y))/2} font-size="35" text-anchor="middle" alignment-baseline="central">${edge.weight}</text> </g>`)
+            }
+            else
+                board.insertAdjacentHTML('afterbegin',
+                `<line id=${edge.id} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>`);
+
+            edge.setHtmlElement(document.getElementById(edge.id));
             document.getElementById(from.id.toString()).classList.toggle("clicked");
             from.id = -1;
        
@@ -91,21 +111,18 @@ board.addEventListener('click',function(e) {
 
 dfsBtn.addEventListener('click',function(e){
 
-    document.getElementById("txtLaunch").removeAttribute("hidden");
-    if(activeBtn!=null)
-        activeBtn.classList.toggle("active");
-    activeBtn = e.target; 
-    activeBtn.classList.toggle("active");
+    btnInit(e);
 });
 
 bfsBtn.addEventListener('click',function(e){
 
-    document.getElementById("txtLaunch").removeAttribute("hidden");
-    if(activeBtn!=null)
-        activeBtn.classList.toggle("active");
-    activeBtn = e.target; 
-    activeBtn.classList.toggle("active");
+    btnInit(e);
 
+});
+
+dijkstraBtn.addEventListener('click',function(e){
+
+    btnInit(e);   
 });
 
 launchBtn.addEventListener('click', async function(e){
@@ -123,6 +140,9 @@ launchBtn.addEventListener('click', async function(e){
         case 'bfs':
             await BFS(source,graph);
             break;
+        case 'dijkstra':
+            await Dijkstra(source,graph);
+            break;
         
         default:
              
@@ -130,5 +150,5 @@ launchBtn.addEventListener('click', async function(e){
     terminal.value += `Done.\n` 
 });
 
-resetBtn.addEventListener('click',() => {graphReset();terminal.visited='';});
+resetBtn.addEventListener('click',() => {graphReset();terminal.value='';});
 

@@ -7,9 +7,6 @@
 }
 .vertex:hover {
   fill: rgb(211, 104, 104);
-
-  display: block;
-  color: red;
 }
 .clicked{
   fill:rgb(211, 104, 104)
@@ -97,7 +94,7 @@ text {
 
 #reset{
   position: relative;
-  top: 290px;
+  top: 200px;
   left: 1153px;
   width: 70px;
   height: 25px; 
