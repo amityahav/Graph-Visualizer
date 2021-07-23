@@ -7,7 +7,7 @@
 <body>   
     <div class="vertical-menu">
         <b>Choose an Algorithm:</b>
-        <button class="btnMenu" id=dfs>DFS</button>
+        <button class="btnMenu active" id=dfs>DFS</button>
         <button class="btnMenu" id=bfs>BFS</button>
         <button class="btnMenu" id=dijkstra>Dijkstra</button>
         <button class="btnMenu" id=prim>Prim</button>
@@ -19,7 +19,7 @@
       <b id= terminalH>Terminal:</b>
       <textarea name="text" id="terminal" cols="30" rows="50"></textarea>
 
-      <g id="txtLaunch" hidden>
+      <g id="txtLaunch">
         <input type="text" id="textBox" value="Choose source Vertex"><br><br>
         <button type="button" id=launch>Launch</button>
       </g>
@@ -31,7 +31,14 @@
         </marker>
        </defs>
     </svg>
-   
+    <g id="directed">
+      <input type="radio" class="directed" name="directed" checked>
+      <label for="directed">Directed</label><br>
+    </g>
+    <g id="undirected">
+      <input type="radio" class="undirected" name="undirected">
+      <label for="undirected">Undirected</label><br>
+    </g>
    <script type= "module" src="./simulator.js"></script> 
 </body>
 </html>

@@ -5,12 +5,14 @@ export class Graph {
     #graph;
     #vertices;
     #edges;
+    #type;
 
     constructor(){     
          
         this.#graph = [];
         this.#vertices = new Map();
         this.#edges = new Map();
+        this.#type = 'directed';
     }
 
     addVertex(id,htmlElement) {
@@ -52,6 +54,18 @@ export class Graph {
     getSize(){
 
         return this.#graph.length;
+    }
+
+    reset(){
+
+        this.#graph =[];
+        this.#vertices.clear();
+        this.#edges.clear();
+    }
+
+    setType(type){
+
+        this.#type = type;
     }
 }
 //impl of vertex

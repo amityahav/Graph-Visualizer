@@ -102,3 +102,17 @@ text {
 .active {
   color: #ccc;
 }
+
+#directed{
+
+  position: relative;
+  top: 150px;
+  left: 12px;
+}
+
+#undirected{
+
+  position: relative;
+  top: 125px;
+  left: 300px;
+}

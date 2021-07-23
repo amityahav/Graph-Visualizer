@@ -8,7 +8,8 @@ let graph = new Graph();
 const board = document.getElementById("board");
 const resetBtn = document.getElementById("reset");
 export const terminal = document.getElementById("terminal");
-let activeBtn = null; 
+const directed = document.querySelector(".directed");
+const undirected = document.querySelector(".undirected");
 const weightEnabled = ['prim','kruskal','dijkstra','maxflow'];
 
 //..DFS
@@ -22,8 +23,8 @@ const launchBtn = document.getElementById("launch");
 const textBox = document.getElementById("textBox");
 
 let from = {x: -1, y: -1, id: -1};
-
-
+let activeBtn = dfsBtn; 
+let activeRBtn = directed;
 
 function idGenerator() {
 
@@ -34,24 +35,25 @@ const makeFreshId = idGenerator();
 
 const graphReset = function() {
 
-    const vertices = Array.from(graph.getVertices().values());
+        while (board.lastChild) {
+            board.removeChild(board.lastChild);
+        }
+        graph.reset()
 
-    vertices.forEach((vertex) => {
-
-        vertex.parent = null;
-        vertex.visited = false;
-        vertex.dist = Number.MAX_SAFE_INTEGER;
-        vertex.htmlElement.style.fill = 'red';
-        vertex.htmlElement.style.stroke = 'black';
-    });
+        board.insertAdjacentHTML("afterbegin",`<defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                refX="15" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" />
+                </marker>
+            </defs>`);
 }
 const btnInit = function(e) {
 
     document.getElementById("txtLaunch").removeAttribute("hidden");
-    if(activeBtn!=null)
-        activeBtn.classList.toggle("active");
+    activeBtn.classList.toggle("active");
     activeBtn = e.target; 
     activeBtn.classList.toggle("active");
+    graphReset();
 }
 //Event handlers
 
@@ -65,7 +67,6 @@ board.addEventListener('click',function(e) {
     <text fill="white" x=${e.clientX-230} y=${e.clientY} font-size="20" text-anchor="middle" alignment-baseline="central">${id.toString()}</text> </g>`);
     const vertex = document.querySelector('.vertex');
     graph.addVertex(id,vertex);
-    console.log(graph.getVertex(id));
     vertex.addEventListener('click',function(e) {
 
         const vertex_x = e.path[0].attributes[2].nodeValue;
@@ -86,7 +87,7 @@ board.addEventListener('click',function(e) {
             const edgeId = `${from.id.toString()}-${id.toString()}`;
             const edge = graph.getEdge(edgeId);
 
-            if(activeBtn!=null && weightEnabled.includes(activeBtn.id)){
+            if(weightEnabled.includes(activeBtn.id)){
                 edge.weight = +prompt("Enter a positive weight:");
                 board.insertAdjacentHTML('afterbegin',
                 `<g> <line id=${edge.id} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>
@@ -151,4 +152,3 @@ launchBtn.addEventListener('click', async function(e){
 });
 
 resetBtn.addEventListener('click',() => {graphReset();terminal.value='';});
-
