@@ -12,7 +12,7 @@ export class Graph {
         this.#graph = [];
         this.#vertices = new Map();
         this.#edges = new Map();
-        this.#type = 'directed';
+        this.#type = 'directed'; //default type
     }
 
     addVertex(id,htmlElement) {
@@ -25,9 +25,19 @@ export class Graph {
 
         if(this.getNeighbours(sourceId).has(targetId))
             return false;
-        this.getNeighbours(sourceId).set(targetId,this.getVertex(targetId));
+
         const edgeId = `${sourceId.toString()}-${targetId.toString()}`;
+        const edgeId2 = `${targetId.toString()}-${sourceId.toString()}`;
+
+        this.getNeighbours(sourceId).set(targetId,this.getVertex(targetId));
         this.#edges.set(edgeId,new Edge(edgeId));
+
+        if(this.#type === 'undirected'){
+
+            this.getNeighbours(targetId).set(sourceId,this.getVertex(sourceId));
+            this.#edges.set(edgeId2,new Edge(edgeId2));
+        }
+
         return true;
     }
 
@@ -66,6 +76,11 @@ export class Graph {
     setType(type){
 
         this.#type = type;
+    }
+
+    getType()
+    {
+        return this.#type;
     }
 }
 //impl of vertex

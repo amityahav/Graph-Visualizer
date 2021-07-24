@@ -24,22 +24,24 @@ const textBox = document.getElementById("textBox");
 
 let from = {x: -1, y: -1, id: -1};
 let activeBtn = dfsBtn; 
-let activeRBtn = directed;
+let count = 0;
 
 function idGenerator() {
 
-    let count = 0;
     return () => count++;
 }
 const makeFreshId = idGenerator();
 
-const graphReset = function() {
+const graphReset = function(type) {
 
-        while (board.lastChild) {
-            board.removeChild(board.lastChild);
-        }
-        graph.reset()
+    count=0;
 
+    while (board.lastChild) 
+        board.removeChild(board.lastChild);
+        
+        graph.reset();
+
+    if(type === 'directed')
         board.insertAdjacentHTML("afterbegin",`<defs>
                 <marker id="arrowhead" markerWidth="10" markerHeight="7" 
                 refX="15" refY="3.5" orient="auto">
@@ -53,7 +55,7 @@ const btnInit = function(e) {
     activeBtn.classList.toggle("active");
     activeBtn = e.target; 
     activeBtn.classList.toggle("active");
-    graphReset();
+    graphReset(graph.getType());
 }
 //Event handlers
 
@@ -85,19 +87,25 @@ board.addEventListener('click',function(e) {
             }
 
             const edgeId = `${from.id.toString()}-${id.toString()}`;
+            const edgeId2 = `${id.toString()}-${from.id.toString()}`;
             const edge = graph.getEdge(edgeId);
+            const edge2 = graph.getEdge(edgeId2);
 
             if(weightEnabled.includes(activeBtn.id)){
                 edge.weight = +prompt("Enter a positive weight:");
+                if(edge2 != undefined)
+                    edge2.weight = edge.weight;
                 board.insertAdjacentHTML('afterbegin',
-                `<g> <line id=${edge.id} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>
+                `<g> <line id=${edgeId} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>
                 <text fill="red" x=${((+from.x)+(+vertex_x))/2} y=${((+from.y)+(+vertex_y))/2} font-size="35" text-anchor="middle" alignment-baseline="central">${edge.weight}</text> </g>`)
             }
             else
                 board.insertAdjacentHTML('afterbegin',
-                `<line id=${edge.id} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>`);
+                `<line id=${edgeId} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>`);
 
-            edge.setHtmlElement(document.getElementById(edge.id));
+            edge.setHtmlElement(document.getElementById(edgeId));
+            if(edge2 != undefined)
+                edge2.setHtmlElement(document.getElementById(edgeId));
             document.getElementById(from.id.toString()).classList.toggle("clicked");
             from.id = -1;
        
@@ -151,4 +159,21 @@ launchBtn.addEventListener('click', async function(e){
     terminal.value += `Done.\n` 
 });
 
-resetBtn.addEventListener('click',() => {graphReset();terminal.value='';});
+resetBtn.addEventListener('click',() => {
+    graphReset(graph.getType());
+    terminal.value='';
+});
+
+undirected.addEventListener('click', ()=> {
+
+    graph.setType("undirected");
+    graphReset(graph.getType());
+    terminal.value='';
+});
+
+directed.addEventListener('click',()=>{
+
+    graph.setType("directed");
+    graphReset(graph.getType());
+    terminal.value='';
+});

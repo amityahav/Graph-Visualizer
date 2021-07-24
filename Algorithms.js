@@ -23,7 +23,7 @@ export const DFS =  async function(source,graph,color) {
    for(let neighbour of neighbours){
       
       if(neighbour.visited)
-          return;
+          continue;
       await sleep(500); 
       terminal.value += `Vertex #${neighbour.id} is selected.\n`
       const currentEdge = document.getElementById(`${source.id.toString()}-${neighbour.id.toString()}`); 
