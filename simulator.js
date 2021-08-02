@@ -32,7 +32,7 @@ function idGenerator() {
 }
 const makeFreshId = idGenerator();
 
-const graphReset = function(type) {
+const graphReset = function(type = graph.getType()) {
 
     count=0;
 
@@ -49,13 +49,24 @@ const graphReset = function(type) {
                 </marker>
             </defs>`);
 }
+
+/*const lineRatio = function(x1,x2,y1,y2) { //helper function 
+
+    const x = Math.abs(x2 - x1);
+    const y = Math.abs(y2 - y1);
+    const dist = Math.sqrt(x*x + y*y);
+    const cBigger = (2/3)*dist;
+    const aBigger = (2/3)*x;
+
+     
+}*/
 const btnInit = function(e) {
 
     document.getElementById("txtLaunch").removeAttribute("hidden");
     activeBtn.classList.toggle("active");
     activeBtn = e.target; 
     activeBtn.classList.toggle("active");
-    graphReset(graph.getType());
+    graphReset();
 }
 //Event handlers
 
@@ -92,6 +103,7 @@ board.addEventListener('click',function(e) {
             const edge2 = graph.getEdge(edgeId2);
 
             if(weightEnabled.includes(activeBtn.id)){
+                const edgeDirection = vertex_x - from.x >= 0 ? 'right' : 'left';
                 edge.weight = +prompt("Enter a positive weight:");
                 if(edge2 != undefined)
                     edge2.weight = edge.weight;
@@ -160,20 +172,20 @@ launchBtn.addEventListener('click', async function(e){
 });
 
 resetBtn.addEventListener('click',() => {
-    graphReset(graph.getType());
+    graphReset();
     terminal.value='';
 });
 
 undirected.addEventListener('click', ()=> {
 
     graph.setType("undirected");
-    graphReset(graph.getType());
+    graphReset();
     terminal.value='';
 });
 
 directed.addEventListener('click',()=>{
 
     graph.setType("directed");
-    graphReset(graph.getType());
+    graphReset();
     terminal.value='';
 });
