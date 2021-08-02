@@ -1,6 +1,6 @@
 
 import { Graph , Vertex } from "./graph.js"
-import { DFS, BFS, cr, Dijkstra } from "./Algorithms.js"
+import { DFS, BFS, cr, Dijkstra, Kruskal } from "./Algorithms.js"
 
 
 //global variables
@@ -18,6 +18,8 @@ const dfsBtn = document.getElementById("dfs");
 const bfsBtn = document.getElementById("bfs");
 //..Dijkstra
 const dijkstraBtn = document.getElementById("dijkstra");
+//..Kruskal
+const kruskalBtn = document.getElementById("kruskal");
 
 const launchBtn = document.getElementById("launch");
 const textBox = document.getElementById("textBox");
@@ -146,9 +148,18 @@ dijkstraBtn.addEventListener('click',function(e){
     btnInit(e);   
 });
 
+kruskalBtn.addEventListener('click',function(e){
+
+    btnInit(e);
+
+});
+
 launchBtn.addEventListener('click', async function(e){
 
-    if(!Number.isInteger(+textBox.value) || +textBox.value >= graph.getSize() || +textBox.value < 0)
+    if(graph.getSize()==0)
+        return;
+        
+    if(activeBtn.id != 'kruskal' && !Number.isInteger(+textBox.value) || +textBox.value >= graph.getSize() || +textBox.value < 0)
        return;
     
     const source = graph.getVertex(+textBox.value);
@@ -163,6 +174,9 @@ launchBtn.addEventListener('click', async function(e){
             break;
         case 'dijkstra':
             await Dijkstra(source,graph);
+            break;
+        case 'kruskal':
+            await Kruskal(graph);
             break;
         
         default:

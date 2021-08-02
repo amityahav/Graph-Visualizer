@@ -1,4 +1,6 @@
 import {terminal} from "./simulator.js"
+import { makeSet, find, union } from './union-find.js';
+
 
 export const cr = function() { //randomized color gen
     const arr = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e',
@@ -111,4 +113,33 @@ export const Dijkstra = async function(source,graph) { // need to find impl of m
 
     }
 
+}
+
+export const Kruskal = async function(graph) {
+
+
+    const forest = Array.from(graph.getVertices().keys()).map(_=>makeSet());
+    const edges = Array.from(graph.getEdges().values()).sort((edge1,edge2)=> edge1.weight - edge2.weight);
+    let totalWeight = 0;
+
+    for(let i=0;i<edges.length;i+=2){ //iterating only half of the edges because its undirected.
+
+        const source = forest[+edges[i].vertices[0]];
+        const target = forest[+edges[i].vertices[1]];
+        edges[i].htmlElement.style.stroke = 'green';
+        terminal.value += `Edge (${edges[i].vertices[0]},${edges[i].vertices[1]}) is selected.\n`;
+        await sleep(600);
+        if(find(source) != find(target)){
+
+                union(source,target);
+                totalWeight+= edges[i].weight;
+        }
+        else{
+            terminal.value += 'Circle was found!.\n';
+            edges[i].htmlElement.style.stroke = 'black';
+            await sleep(600);
+        }
+    }
+
+    terminal.value += `MST total weight: ${totalWeight}.\n`;
 }

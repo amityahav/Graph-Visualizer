@@ -61,6 +61,11 @@ export class Graph {
         return this.#vertices;
     }
 
+    getEdges(){
+
+        return this.#edges;
+    }
+
     getSize(){
 
         return this.#graph.length;
@@ -82,6 +87,7 @@ export class Graph {
     {
         return this.#type;
     }
+
 }
 //impl of vertex
 
@@ -103,6 +109,7 @@ export class Edge {
     constructor(id){
         this.id = id;
         this.weight = 1;
+        this.vertices = id.split('-');
     }
     setHtmlElement(htmlElement){
 
