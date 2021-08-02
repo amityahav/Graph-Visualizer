@@ -87,6 +87,10 @@ export class Graph {
     {
         return this.#type;
     }
+    setType(type){
+
+        this.#type = type;
+    }
 
 }
 //impl of vertex

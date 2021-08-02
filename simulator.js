@@ -107,7 +107,7 @@ board.addEventListener('click',function(e) {
             if(weightEnabled.includes(activeBtn.id)){
                 const edgeDirection = vertex_x - from.x >= 0 ? 'right' : 'left';
                 edge.weight = +prompt("Enter a positive weight:");
-                if(edge2 != undefined)
+                if(edge2 != undefined && graph.getType()=='undirected')
                     edge2.weight = edge.weight;
                 board.insertAdjacentHTML('afterbegin',
                 `<g> <line id=${edgeId} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>
@@ -118,7 +118,7 @@ board.addEventListener('click',function(e) {
                 `<line id=${edgeId} x1=${from.x} y1=${from.y} x2=${vertex_x} y2=${vertex_y} stroke="black" stroke-width ="3" marker-end="url(#arrowhead)"/>`);
 
             edge.setHtmlElement(document.getElementById(edgeId));
-            if(edge2 != undefined)
+            if(edge2 != undefined && graph.getType()=='undirected')
                 edge2.setHtmlElement(document.getElementById(edgeId));
             document.getElementById(from.id.toString()).classList.toggle("clicked");
             from.id = -1;
@@ -134,23 +134,36 @@ board.addEventListener('click',function(e) {
 
 dfsBtn.addEventListener('click',function(e){
 
+    textBox.disabled = false;
+    directed.disabled = false;
+
     btnInit(e);
 });
 
 bfsBtn.addEventListener('click',function(e){
 
+    textBox.disabled = false;
+    directed.disabled = false;
     btnInit(e);
 
 });
 
 dijkstraBtn.addEventListener('click',function(e){
 
+    textBox.disabled = false;
+    directed.disabled = false;
     btnInit(e);   
 });
 
 kruskalBtn.addEventListener('click',function(e){
 
+    graph.setType('undirected');
     btnInit(e);
+    directed.disabled = true;
+    undirected.checked = true;
+    directed.checked = false;
+    textBox.disabled = true;
+
 
 });
 
