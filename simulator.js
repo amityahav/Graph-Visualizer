@@ -1,6 +1,6 @@
 
 import { Graph , Vertex } from "./graph.js"
-import { DFS, BFS, cr, Dijkstra, Kruskal } from "./Algorithms.js"
+import { DFS, BFS, cr, Dijkstra, Kruskal, Prim } from "./Algorithms.js"
 
 
 //global variables
@@ -20,6 +20,8 @@ const bfsBtn = document.getElementById("bfs");
 const dijkstraBtn = document.getElementById("dijkstra");
 //..Kruskal
 const kruskalBtn = document.getElementById("kruskal");
+//..Prim
+const primBtn = document.getElementById("prim");
 
 const launchBtn = document.getElementById("launch");
 const textBox = document.getElementById("textBox");
@@ -167,12 +169,22 @@ kruskalBtn.addEventListener('click',function(e){
 
 });
 
+primBtn.addEventListener('click',function(e){
+
+    graph.setType('undirected');
+    btnInit(e);
+    directed.disabled = true;
+    undirected.checked = true;
+    directed.checked = false;
+    textBox.disabled = true;
+});
+
 launchBtn.addEventListener('click', async function(e){
 
     if(graph.getSize()==0)
         return;
         
-    if(activeBtn.id != 'kruskal' && !Number.isInteger(+textBox.value) || +textBox.value >= graph.getSize() || +textBox.value < 0)
+    if(activeBtn.id != 'kruskal' && activeBtn.id != 'prim' && !Number.isInteger(+textBox.value) || +textBox.value >= graph.getSize() || +textBox.value < 0)
        return;
     
     const source = graph.getVertex(+textBox.value);
@@ -190,6 +202,9 @@ launchBtn.addEventListener('click', async function(e){
             break;
         case 'kruskal':
             await Kruskal(graph);
+            break;
+        case 'prim':
+            await Prim(graph);
             break;
         
         default:
