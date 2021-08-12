@@ -80,4 +80,10 @@ export class MinHeap {
 
         return smallest
     }
+
+    isEmpty(){
+
+        return this.heap.length == 1;
+    }
+    
 }

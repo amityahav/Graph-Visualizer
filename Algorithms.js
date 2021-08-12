@@ -147,28 +147,36 @@ export const Kruskal = async function(graph) {
 
 export const Prim = async function(graph) {
 
-    let currentVertex = Math.floor(Math.random() * graph.getSize());
-    let visitedSet = new Set();
-    let minHeap = new MinHeap((edge)=>edge.weight);
-    let totalWeight = 0;
+    let currentVertex = Math.floor(Math.random() * graph.getSize()); //choose randomly
+    let edgeQueue = new MinHeap(edge=> edge.weight);
+    let explored = new Set();
+    explored.add(currentVertex);
+    let edges = Array.from(graph.getNeighbours(currentVertex).keys()).map((n)=>graph.getEdge(`${currentVertex}-${n}`));
+    edges.forEach(edge => edgeQueue.insert(edge));
+    let currentMinEdge = edgeQueue.getMin();
 
-    visitedSet.add(currentVertex);
+    while(!edgeQueue.isEmpty()){
 
-    while(visitedSet.size != graph.getSize()){
-
+    
         terminal.value += `Vertex #${currentVertex} is picked.\n`;
-        await sleep(500);
-        const currentNeighboursEdges = Array.from(graph.getNeighbours(currentVertex).keys()).map((neighbour)=>graph.getEdge(`${currentVertex}-${neighbour}`)).filter((edge)=> !visitedSet.has(edge.vertices[1]));
-        //console.log(currentNeighboursEdges);
-        currentNeighboursEdges.forEach((edge)=>minHeap.insert(edge));
-        const cheapestEdge = minHeap.remove();
-        terminal.value += `Edge (${cheapestEdge.vertices[0]},${cheapestEdge.vertices[1]}) is added to the tree.\n`;
-        totalWeight += cheapestEdge.weight;
-        await sleep(500);
-        cheapestEdge.htmlElement.style.stroke = 'green';
-        visitedSet.add(cheapestEdge.vertices[1]);
-        currentVertex = +cheapestEdge.vertices[1];
+        await sleep(200);
+
+        while(!edgeQueue.isEmpty() && explored.has(+currentMinEdge.vertices[1])){
+            currentMinEdge = edgeQueue.remove();
+        }
+
+        let nextNode = +currentMinEdge.vertices[1];
+        if(!explored.has(nextNode)){
+             
+             terminal.value += `Edge (${currentMinEdge.vertices[0]},${currentMinEdge.vertices[1]}) is picked.\n`;
+             currentMinEdge.htmlElement.style.stroke = 'green';
+             edges = Array.from(graph.getNeighbours(nextNode).keys()).map((n)=>graph.getEdge(`${nextNode}-${n}`));
+             edges.forEach(edge => edgeQueue.insert(edge));
+             await sleep(800);
+            
+        }
+        explored.add(nextNode);
+        currentVertex = nextNode;
     }
 
-    terminal.value += `MST Total Weight: ${totalWeight}`;
 }
