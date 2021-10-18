@@ -94,7 +94,7 @@ text {
 
 #reset{
   position: relative;
-  top: 200px;
+  top: 250px;
   left: 1153px;
   width: 70px;
   height: 25px; 
@@ -106,13 +106,13 @@ text {
 #directed{
 
   position: relative;
-  top: 150px;
+  top: 200px;
   left: 12px;
 }
 
 #undirected{
 
   position: relative;
-  top: 125px;
+  top: 175px;
   left: 300px;
 }
